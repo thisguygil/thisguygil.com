@@ -1,0 +1,40 @@
+// Handles the contact form submission
+var form = document.getElementById("contactForm");
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var status = document.getElementById("formStatus");
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          status.innerHTML = "Thanks for your submission!";
+          form.reset()
+        } else {
+          response.json().then(data => {
+            if (Object.hasOwn(data, 'errors')) {
+              status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+            } else {
+              status.innerHTML = "Oops! There was a problem submitting your form"
+            }
+            
+          })
+        }
+        clearStatusMessage()
+      }).catch(() => {
+        status.innerHTML = "Oops! There was a problem submitting your form"
+        clearStatusMessage()
+      });
+    }
+    form.addEventListener("submit", handleSubmit)
+
+// Clear the status message after 3 seconds
+function clearStatusMessage() {
+  setTimeout(() => {
+    document.getElementById("formStatus").innerHTML = ""
+  }, 3000)
+}

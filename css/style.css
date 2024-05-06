@@ -1,0 +1,95 @@
+body {
+    background: rgb(25,0,36);
+    background: linear-gradient(90deg, rgba(25,0,36,1) 0%, rgba(121,9,9,1) 50%, rgba(69,8,8,1) 100%);
+    color: white;
+}
+
+.raleway-font {
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.fixed-top {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#navbarToggleExternalContent {
+    background-color: #fff;
+}
+
+.projects-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-image: url('../assets/dark_pattern.jpg');
+    border: #000000 5px solid;
+    background-size: cover;
+    background-position: center;
+}
+
+#aboutme img {
+    display: block;
+    width: 50%;
+    height: auto;
+    margin-left: auto;
+}
+
+@media (max-width: 992px) {
+    #aboutme img {
+        max-width: 25%;
+        height: auto;
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+
+#aboutme {
+    text-align: center;
+}
+
+#bobo {
+    float: right;
+    width: 100px;
+    height: auto;
+    border: #000000 5px solid;
+    background-color: rgb(43, 8, 8);
+    border-radius: 20%;
+}
+
+.align-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+hr {
+    width: 50%;
+    margin: 20px auto;
+    border: 1px solid white;
+}
+
+.btn {
+    border: #000000 3px solid;
+    border-radius: 10px;
+}
+
+.btn:hover {
+    border: #000000 3px solid;
+}
+
+footer {
+    padding-bottom: 20px;
+}
+
+.social-icon {
+    font-size: 36px;
+}
+
+a {
+    color: white;
+}
