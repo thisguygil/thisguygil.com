@@ -30,6 +30,7 @@ body {
     border: #000000 5px solid;
     background-size: cover;
     background-position: center;
+    margin: 20px;
 }
 
 #aboutme img {
