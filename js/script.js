@@ -1,40 +1,70 @@
-// Handles the contact form submission
-var form = document.getElementById("contactForm");
-    async function handleSubmit(event) {
-      event.preventDefault();
-      var status = document.getElementById("formStatus");
-      var data = new FormData(event.target);
-      fetch(event.target.action, {
-        method: form.method,
-        body: data,
+const form = document.getElementById('contactForm')
+const formStatus = document.getElementById('formStatus')
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const recaptchaResponse = grecaptcha.getResponse();
+
+    if (recaptchaResponse.length === 0) {
+        formStatus.textContent = 'Please complete the reCAPTCHA.';
+        return;
+    }
+
+    const formData = new FormData(event.target);
+    const params = new URLSearchParams(formData);
+
+    fetch('/submit', {
+        method: "POST",
+        body: params
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            sendMessage(formData);
+        } else {
+            setStatusMessage('reCAPTCHA verification failed. Please try again.');
+        }
+    })
+    .catch(error => {
+        setStatusMessage('There was a problem submitting your form.');
+        console.error(error);
+    });
+
+});
+
+function sendMessage(formData) {
+    fetch("https://formspree.io/f/mqkryedn", {
+        method: "POST",
+        body: formData,
         headers: {
             'Accept': 'application/json'
         }
-      }).then(response => {
+    })
+    .then(response => {
         if (response.ok) {
-          status.innerHTML = "Thanks for your submission!";
-          form.reset()
+            setStatusMessage("Thanks for your submission!");
+            form.reset();
         } else {
-          response.json().then(data => {
-            if (Object.hasOwn(data, 'errors')) {
-              status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
-            } else {
-              status.innerHTML = "Oops! There was a problem submitting your form"
-            }
-            
-          })
+            response.json().then(data => {
+                if (Object.hasOwn(data, 'errors')) {
+                    setStatusMessage(data["errors"].map(error => error["message"]).join(", "))
+                } else {
+                    setStatusMessage("There was a problem submitting your form.")
+                }
+            });
         }
-        clearStatusMessage()
-      }).catch(() => {
-        status.innerHTML = "Oops! There was a problem submitting your form"
-        clearStatusMessage()
-      });
-    }
-    form.addEventListener("submit", handleSubmit)
+    })
+    .catch((error) => {
+        setStatusMessage("There was a problem submitting your form.");
+        console.error(error);
+    });
+}
 
-// Clear the status message after 3 seconds
-function clearStatusMessage() {
-  setTimeout(() => {
-    document.getElementById("formStatus").innerHTML = ""
-  }, 3000)
+// Set the status message for the form and remove it after 3 seconds
+function setStatusMessage(content) {
+    formStatus.textContent = content;
+    setTimeout(() => {
+        document.getElementById("formStatus").innerHTML = ""
+    }, 3000);
 }

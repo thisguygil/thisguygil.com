@@ -1,1 +1,3 @@
 .well-known
+.env
+node_modules
